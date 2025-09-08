@@ -73,6 +73,30 @@ Backend de mensajería instantánea con control de sesiones, usuarios, mensajes 
 - `POST /messages/`: Enviar mensaje.
 - `WS /ws/{session_id}/`: Conexión WebSocket a una sesión.
 
+## 🔌 Conexión WebSocket
+
+Puedes conectarte al WebSocket usando la URL:
+
+```
+ws://localhost:8000/ws/{session_id}/
+```
+
+Reemplaza `{session_id}` por el ID de la sesión a la que deseas unirte. El WebSocket requiere autenticación JWT (token en el parámetro de conexión o encabezado según implementación).
+
+Para probar la conexión puedes usar herramientas como:
+
+- [Piehost WebSocket Tester](https://piehost.com/websocket-tester)
+- [websocat](https://github.com/vi/websocat) (CLI)
+
+Ejemplo de payload para enviar mensajes:
+
+```json
+{
+   "content": "Hola mundo",
+   "sender_type": "user"
+}
+```
+
 ## 🧪 Pruebas
 
 Ejecuta las pruebas con:
