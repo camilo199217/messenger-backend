@@ -32,7 +32,7 @@ async def list_messages(
     "/",
     summary="Crear mensaje",
     status_code=200,
-    response_model=message_schema.MessageDetail,
+    response_model=message_schema.MessageCreationResponse,
     responses={
         200: {"description": "Mensaje enviado"},
         422: {"description": "Error de validación"},

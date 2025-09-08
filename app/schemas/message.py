@@ -24,4 +24,24 @@ class MessageDetail(BaseModel):
     sender_id: uuid.UUID
 
 
+class MessageCreationMetaData(BaseModel):
+    word_count: int
+    character_count: int
+    processed_at: datetime
+
+
+class MessageCreationData(BaseModel):
+    message_id: uuid.UUID
+    session_id: uuid.UUID
+    content: str
+    timestamp: datetime
+    sender: SenderType
+    metadata: MessageCreationMetaData
+
+
+class MessageCreationResponse(BaseModel):
+    status: str = "success"
+    data: MessageCreationData
+
+
 class MessageFilters(PaginationParams): ...

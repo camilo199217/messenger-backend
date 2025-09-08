@@ -1,4 +1,5 @@
 import asyncio
+from typing import Union
 from uuid import UUID
 from better_profanity import profanity
 from sqlmodel import asc, desc, func, select
@@ -20,8 +21,8 @@ class MessageService:
         self.manager = manager
 
     async def create_message(
-        self, *, sender_id: str, message_data: MessageCreate
-    ) -> Message:
+        self, *, sender_id: Union[str, None], message_data: MessageCreate
+    ) -> dict:
         """Crea un nuevo mensaje."""
         message = Message(**message_data.model_dump(), sender_id=sender_id)
 

@@ -17,8 +17,8 @@ class Message(SQLModel, table=True):
 
     sender_type: SenderType = Field(default=SenderType.user)
 
-    sender_id: UUID = Field(foreign_key="users.id")
-    sender: "User" = Relationship(back_populates="messages")
+    sender_id: Optional[UUID] = Field(foreign_key="users.id")
+    sender: Optional["User"] = Relationship(back_populates="messages")
 
     session_id: UUID = Field(foreign_key="sessions.id")
     session: "Session" = Relationship(back_populates="messages")
