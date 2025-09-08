@@ -57,12 +57,11 @@ class SessionService:
             pattern = f"%{params.search.strip().lower()}%"
             query = query.filter(func.lower(Session.name).ilike(pattern))
 
-        if hasattr(Session, params.sort_by):
-            if params.sort_by:
-                if params.descending == "DESC":
-                    query = query.order_by(desc(params.sort_by))
-                else:
-                    query = query.order_by(asc(params.sort_by))
+        if params.sort_by and hasattr(Session, params.sort_by):
+            if params.descending == "DESC":
+                query = query.order_by(desc(params.sort_by))
+            else:
+                query = query.order_by(asc(params.sort_by))
 
         query = query.offset(offset)
 

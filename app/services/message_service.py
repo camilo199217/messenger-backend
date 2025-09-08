@@ -83,12 +83,11 @@ class MessageService:
             pattern = f"%{params.search.strip().lower()}%"
             query = query.filter(func.lower(Message.content).ilike(pattern))
 
-        if params.sort_by:
-            if hasattr(Message, params.sort_by):
-                if params.descending == "DESC":
-                    query = query.order_by(desc(params.sort_by))
-                else:
-                    query = query.order_by(asc(params.sort_by))
+        if params.sort_by and hasattr(Message, params.sort_by):
+            if params.descending == "DESC":
+                query = query.order_by(desc(params.sort_by))
+            else:
+                query = query.order_by(asc(params.sort_by))
 
         query = query.offset(offset).limit(params.size)
         result = await self.session.exec(query)
