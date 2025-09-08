@@ -29,6 +29,10 @@ pytest = "^8.4.2"
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.pytest.ini_options]
+addopts = "--maxfail=1 --disable-warnings -v"
+pythonpath = ["."]
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
