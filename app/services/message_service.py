@@ -80,7 +80,7 @@ class MessageService:
 
         if params.search and params.search.strip():
             pattern = f"%{params.search.strip().lower()}%"
-            query = query.filter(func.lower(Message.title).ilike(pattern))
+            query = query.filter(func.lower(Message.content).ilike(pattern))
 
         if params.sort_by:
             if params.descending == "DESC":

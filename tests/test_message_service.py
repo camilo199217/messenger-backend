@@ -15,16 +15,18 @@ class FakeMessage:
     sender_id = "fake_sender_id_column"
     session_id = "fake_session_id_column"
     sender_type = "fake_sender_type_column"
-    title = "fake_title_column"
+    timestamp = None
 
     def __init__(self, **kwargs):
+        from datetime import datetime
+
         self.__dict__.update(kwargs)
         self.id = kwargs.get("id", uuid4())
         self.content = kwargs.get("content", "Fake Content")
         self.sender_id = kwargs.get("sender_id", uuid4())
         self.session_id = kwargs.get("session_id", uuid4())
         self.sender_type = kwargs.get("sender_type", SenderType.user)
-        self.title = kwargs.get("title", "Fake Title")
+        self.timestamp = kwargs.get("timestamp", datetime.utcnow())
 
 
 class FakeResult:
@@ -116,9 +118,9 @@ class TestMessageService(unittest.IsolatedAsyncioTestCase):
         self.mock_session.refresh.assert_awaited()
         self.mock_profanity.censor.assert_not_called()
         self.mock_profanity.contains_profanity.assert_not_called()
-        self.assertIsInstance(result, FakeMessage)
-        self.assertEqual(result.content, "Hello world")
-        self.assertEqual(result.sender_type, SenderType.user)
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result["data"]["content"], "Hello world")
+        self.assertEqual(result["data"]["sender"], SenderType.user)
 
     async def test_create_message_medium_censorship(self):
         """Debe censurar el contenido en level MEDIUM"""
@@ -140,8 +142,8 @@ class TestMessageService(unittest.IsolatedAsyncioTestCase):
         )
 
         self.mock_profanity.censor.assert_called_once_with("badword")
-        self.assertEqual(result.content, "****")
-        self.assertEqual(result.sender_type, SenderType.user)
+        self.assertEqual(result["data"]["content"], "****")
+        self.assertEqual(result["data"]["sender"], SenderType.user)
 
     async def test_create_message_high_censorship_no_profanity(self):
         """No debe censurar ni rechazar mensaje limpio en HIGH"""
@@ -162,8 +164,8 @@ class TestMessageService(unittest.IsolatedAsyncioTestCase):
         )
 
         self.mock_profanity.contains_profanity.assert_called_once_with("good message")
-        self.assertEqual(result.content, "good message")
-        self.assertEqual(result.sender_type, SenderType.system)
+        self.assertEqual(result["data"]["content"], "good message")
+        self.assertEqual(result["data"]["sender"], SenderType.system)
 
     async def test_create_message_high_censorship_with_profanity(self):
         """Debe rechazar mensaje ofensivo en HIGH"""
