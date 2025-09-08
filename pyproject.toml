@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "messeger-backend"
+version = "0.1.0"
+description = ""
+authors = ["Juan Camilo Palacio Alvarez <jcpa0917@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+
+uvicorn = ">=0.34.3,<0.35.0"
+dotenv = ">=0.9.9,<0.10.0"
+fastapi = { version = ">=0.115.12,<0.116.0", extras = ["all"] }
+slowapi = "^0.1.9"
+sqlmodel = "^0.0.24"
+babel = "^2.17.0"
+pyjwt = "^2.10.1"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+bcrypt = "<4.0"
+ruff = "^0.12.12"
+aiosqlite = "^0.21.0"
+websockets = "^15.0.1"
+better-profanity = "^0.7.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "B", "I"]
+
+[tool.ruff.isort]
+known-first-party = ["app"]
+combine-as-imports = true
