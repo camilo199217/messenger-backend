@@ -14,7 +14,7 @@ async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit
 
 
 # Dependency for FastAPI routes
-async def get_session() -> AsyncGenerator[AsyncSession]:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
 

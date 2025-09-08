@@ -51,7 +51,21 @@ class MessageService:
 
         asyncio.create_task(self.manager.broadcast(message=message))
 
-        return message
+        return {
+            "status": "success",
+            "data": {
+                "message_id": message.id,
+                "session_id": session.id,
+                "content": message.content,
+                "timestamp": message.timestamp,
+                "sender": message.sender_type,
+                "metadata": {
+                    "word_count": len(message.content.split()),
+                    "character_count": len(message.content),
+                    "processed_at": message.timestamp,
+                },
+            },
+        }
 
     async def message_list(self, *, session_id: UUID, params: MessageFilters):
         """Lista todas las tareas."""

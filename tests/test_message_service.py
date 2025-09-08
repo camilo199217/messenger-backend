@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 from fastapi import HTTPException, status
 
-from app.enums.send_types import SenderType
-from app.enums.session_enum import SessionLevelCensorship
-from app.schemas.message import MessageCreate, MessageFilters
+from ..app.enums.send_types import SenderType
+from ..app.enums.session_enum import SessionLevelCensorship
+from ..app.schemas.message import MessageCreate, MessageFilters
 
 
 # --- Fakes para el entorno de pruebas ---

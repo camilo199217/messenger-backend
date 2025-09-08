@@ -1,8 +1,10 @@
-import asyncio
 from contextlib import asynccontextmanager
 import os
 from better_profanity import profanity
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Request
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -40,6 +42,31 @@ app = FastAPI(
     description="Backend de mensajería con filtro",
     version="1.0.0",
 )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    error_detail = exc.errors()[0] if exc.errors() else {}
+    loc = error_detail.get("loc", [])
+    field = loc[-1] if loc else ""
+    msg = error_detail.get("msg", "Formato de mensaje inválido")
+    # Mensaje personalizado para el campo 'sender'
+    if field == "sender":
+        details = "El campo 'sender' debe ser 'user' o 'system'"
+    else:
+        details = msg
+    return JSONResponse(
+        status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "status": "error",
+            "error": {
+                "code": "INVALID_FORMAT",
+                "message": "Formato de mensaje inválido",
+                "details": details,
+            },
+        },
+    )
+
 
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)

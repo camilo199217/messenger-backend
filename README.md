@@ -18,8 +18,8 @@ Backend de mensajería instantánea con control de sesiones, usuarios, mensajes 
 
 1. **Clona el repositorio y entra al directorio:**
    ```bash
-   git clone <repo-url>
-   cd messenger
+   git clone https://github.com/camilo199217/messenger-backend
+   cd messenger-backend
    ```
 
 2. **Instala dependencias con Poetry:**
@@ -35,7 +35,7 @@ Backend de mensajería instantánea con control de sesiones, usuarios, mensajes 
 
 4. **Ejecuta la aplicación:**
    ```bash
-   poetry run fastapi app/main.py
+   poetry run fastapi run app/main.py
 
    # Modo desarrollo
    poetry run fastapi dev app/main.py
@@ -80,6 +80,22 @@ Ejecuta las pruebas con:
 poetry run pytest
 ```
 
+## 🧹 Linting con Ruff
+
+Este proyecto utiliza [Ruff](https://docs.astral.sh/ruff/) para el formateo y análisis estático de código Python. Puedes ejecutar Ruff con:
+
+```bash
+poetry run ruff check .
+```
+
+Para corregir automáticamente problemas de formato:
+
+```bash
+poetry run ruff check . --fix
+```
+
+La configuración se encuentra en `ruff.toml`.
+
 ## 📝 Notas
 
 - El filtro de palabras ofensivas se carga desde `app/profanity_word_list.txt`.
@@ -87,5 +103,17 @@ poetry run pytest
 - Puedes cambiar la base de datos modificando `DATABASE_URL` en `.env`.
 
 ---
+  
+## 🐳 Ejecución con Docker
+
+Puedes levantar la aplicación usando Docker y Docker Compose:
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Esto expondrá la API en `http://localhost:8000`.
+Documentación de la API en `http://localhost:8000/docs`.
   
 Autor: Juan Camilo Palacio Alvarez
